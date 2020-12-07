@@ -30,6 +30,13 @@ android {
 
 dependencies {
 
+    compile files('libs/Gaussian.java')
+    compile files('libs/ImageUtils.java')
+    compile files('libs/JCanny.java')
+    compile files('libs/Sobel.java')
+    compile files('libs/Tester.java')
+
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
