@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation project(path: ':openCVLibrary343')
     compile files('libs/Gaussian.java')
     compile files('libs/ImageUtils.java')
