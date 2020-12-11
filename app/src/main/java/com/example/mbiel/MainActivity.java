@@ -1,5 +1,6 @@
 package com.example.mbiel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,26 +18,38 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity{
 
     final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
-    final File file = new File("src/main/ic_launcher-playstore.png");
-
+    File file;
+    public static final int PICK_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new Thread(new Runnable() {
-            public void run(){
-                String a = null;
-                try {
-                    a = runA("http://86.83.86.194:5000/test");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(a);
-            }
-        }).start();
+        dosomething();
 
+//        new Thread(new Runnable() {
+//            public void run(){
+//                String a = null;
+//                try {
+//                    a = runA("http://86.83.86.194:5000/test");
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                System.out.println(a);
+//            }
+//        }).start();
+
+    }
+
+    void dosomething(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+
+        file = new File(intent.toUri(0));
+        System.out.println(file);
     }
 
     OkHttpClient client = new OkHttpClient();
