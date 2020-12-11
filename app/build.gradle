@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.mbiel"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -21,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            manifestPlaceholders.cleartextTrafficPermitted ="true"
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -30,10 +34,8 @@ android {
 
 dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation project(path: ':openCVLibrary343')
     compile files('libs/Gaussian.java')
     compile files('libs/ImageUtils.java')
-    compile files('libs/JCanny.java')
     compile files('libs/Sobel.java')
     compile files('libs/Tester.java')
 
