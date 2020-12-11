@@ -14,32 +14,43 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
-    final File file = new File("messi.jpg");
+    final File file = new File("src/main/ic_launcher-playstore.png");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        OkHttpClient client = new OkHttpClient();
+        new Thread(new Runnable() {
+            public void run(){
+                String a = null;
+                try {
+                    a = runA("http://86.83.86.194:5000/test");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(a);
+            }
+        }).start();
 
+    }
+
+    OkHttpClient client = new OkHttpClient();
+
+    String runA(String url) throws IOException {
         RequestBody req = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("image","messi.jpg", RequestBody.create(MEDIA_TYPE_JPG, file))
-                .build();
+                .addFormDataPart("messi","messi.jpg", RequestBody.create(MEDIA_TYPE_JPG, file)).build();
         Request request = new Request.Builder()
-                .url("http://86.83.86.194:5000/test")
+                .url(url)
                 .post(req)
                 .build();
 
-        try {
-            Response response = client.newCall(request).execute();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
         }
     }
 }
