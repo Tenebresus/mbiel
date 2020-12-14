@@ -26,30 +26,34 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dosomething();
-
-//        new Thread(new Runnable() {
-//            public void run(){
-//                String a = null;
-//                try {
-//                    a = runA("http://86.83.86.194:5000/test");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                System.out.println(a);
-//            }
-//        }).start();
-
-    }
-
-    void dosomething(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
 
-        file = new File(intent.toUri(0));
-        System.out.println(file);
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                file = new File(data.toUri(0));
+                System.out.println(file);
+
+                new Thread(new Runnable() {
+                    public void run(){
+                        String a = null;
+                        try {
+                            a = runA("http://86.83.86.194:5000/test");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println(a);
+                    }
+                }).start();
+            }
+        }
     }
 
     OkHttpClient client = new OkHttpClient();
