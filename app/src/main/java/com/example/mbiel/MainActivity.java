@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity{
         while ((len = inputStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
         }
+        System.out.println(byteBuffer.toByteArray().length);
         return byteBuffer.toByteArray();
     }
 
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity{
             if (!dir.exists()) dir.mkdir();
 
             //Create file..
-            File file = new File(root + File.separator + "image.jpg");
+            file = new File(root + File.separator + "image.jpg");
             file.createNewFile();
 
             FileOutputStream out = new FileOutputStream(file);
