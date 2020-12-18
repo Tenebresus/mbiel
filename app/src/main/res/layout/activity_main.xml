@@ -14,18 +14,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editTextTextPersonName2"
+            <Button
+                android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="168dp"
-                android:layout_marginEnd="92dp"
-                android:layout_marginRight="92dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Hello test"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="Button"
+                tools:layout_editor_absoluteX="159dp"
+                tools:layout_editor_absoluteY="311dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
