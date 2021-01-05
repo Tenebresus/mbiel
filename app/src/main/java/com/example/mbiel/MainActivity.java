@@ -1,6 +1,7 @@
 package com.example.mbiel;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -42,12 +45,16 @@ public class MainActivity extends AppCompatActivity{
     private static final int STORAGE_PERMISSION_CODE = 123;
     public static final int PICK_IMAGE = 1;
     Uri filePath;
+    ImageView startImg;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestStoragePermission();
+
+        startImg = (ImageView)findViewById(R.id.image);
 
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -69,10 +76,6 @@ public class MainActivity extends AppCompatActivity{
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-
-
-
-
             }
         }
     }
@@ -90,9 +93,19 @@ public class MainActivity extends AppCompatActivity{
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
+            @SuppressLint("ResourceType")
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println(response);
+                byte[] decodedString = new byte[0];
+                try {
+                    String resp = response.getString("data");
+                    decodedString = Base64.decode(resp, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString,
+                            0,decodedString.length);
+                    startImg.setImageBitmap(decodedByte);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
