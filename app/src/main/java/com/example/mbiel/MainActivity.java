@@ -1,5 +1,6 @@
 package com.example.mbiel;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity{
 
+    private static Context context;
     ImageView imageView;
     Uri imageUri;
     private static final int PICK_IMAGE = 100;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MainActivity.context = getApplicationContext();
 
         imageView = (ImageView)findViewById(R.id.imageView);
 
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity{
                 openGallery();
             }
         });
+    }
+
+    public static Context getAppContext() {
+        return MainActivity.context;
     }
 
     private void openGallery(){

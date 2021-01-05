@@ -12,10 +12,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class volleyPost extends Activity {
+public class volleyPost extends MainActivity {
     public void volleyPostRequest(String dat, String url){
         String postUrl = url;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.getAppContext());
 
         JSONObject postData = new JSONObject();
         try {

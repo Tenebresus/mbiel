@@ -24,7 +24,7 @@ public class filterActivity extends AppCompatActivity {
         cirkelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                volley.volleyPostRequest(encodedImage, "http://86.83.86.194/cirkel");
+                volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/cirkel");
             }
         });
 
@@ -32,7 +32,7 @@ public class filterActivity extends AppCompatActivity {
         driehoekButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                volley.volleyPostRequest(encodedImage, "http://86.83.86.194/driehoek");
+                volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/driehoek");
             }
         });
     }
