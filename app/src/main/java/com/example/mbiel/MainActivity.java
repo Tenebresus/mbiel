@@ -14,8 +14,9 @@ import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private static Context context;
     ImageView imageView;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         MainActivity.context = getApplicationContext();
 
-        imageView = (ImageView)findViewById(R.id.imageView);
+        imageView = (ImageView) findViewById(R.id.imageView);
 
         // Als je op de button klikt opent hij de camera
         final Button takePictureButton = findViewById(R.id.takePictureButton);
@@ -52,29 +53,36 @@ public class MainActivity extends AppCompatActivity{
         return MainActivity.context;
     }
 
-    private void openGallery(){
+    private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
-    private void openCamera(){
+
+    private void openCamera() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, TAKE_PICTURE);
     }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
 
-            Bitmap photo = (Bitmap)data.getExtras().get("data");
-            String encodedImage = encodeImage(photo);
+            imageUri = data.getData();
+            try {
+                Bitmap photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                String encodedImage = encodeImage(photo);
 
-            Intent intent = new Intent(getBaseContext(), filterActivity.class);
-            intent.putExtra("PHOTO", encodedImage);
-            startActivity(intent);
+                Intent intent = new Intent(getBaseContext(), filterActivity.class);
+                intent.putExtra("PHOTO", encodedImage);
+                startActivity(intent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        if(requestCode == TAKE_PICTURE && resultCode == RESULT_OK){
+        if (requestCode == TAKE_PICTURE && resultCode == RESULT_OK) {
 
-            Bitmap photo = (Bitmap)data.getExtras().get("data");
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
             String encodedImage = encodeImage(photo);
 
             Intent intent = new Intent(getBaseContext(), filterActivity.class);
@@ -83,10 +91,9 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private String encodeImage(Bitmap bm)
-    {
+    private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
 
