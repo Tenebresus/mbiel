@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.net.Uri;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -54,13 +57,32 @@ public class MainActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
+
+            Bitmap photo = (Bitmap)data.getExtras().get("data");
+            String encodedImage = encodeImage(photo);
+
+            Intent intent = new Intent(getBaseContext(), filterActivity.class);
+            intent.putExtra("PHOTO", encodedImage);
+            startActivity(intent);
         }
         if(requestCode == TAKE_PICTURE && resultCode == RESULT_OK){
+
             Bitmap photo = (Bitmap)data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-            imageView.setVisibility(View.VISIBLE);
+            String encodedImage = encodeImage(photo);
+
+            Intent intent = new Intent(getBaseContext(), filterActivity.class);
+            intent.putExtra("PHOTO", encodedImage);
+            startActivity(intent);
         }
+    }
+
+    private String encodeImage(Bitmap bm)
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        return encImage;
     }
 }
