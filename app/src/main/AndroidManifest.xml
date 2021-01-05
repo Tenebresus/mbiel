@@ -27,6 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mbiel"
         android:usesCleartextTraffic="true">
+        <activity android:name=".volleyPost"></activity>
         <activity android:name=".filterActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
