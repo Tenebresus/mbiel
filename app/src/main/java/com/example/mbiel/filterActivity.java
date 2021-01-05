@@ -2,22 +2,29 @@ package com.example.mbiel;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.mbiel.volleyPost;
 
-public class filterActivity extends AppCompatActivity {
+import java.io.ByteArrayOutputStream;
 
-    public String encodedImage;
+public class filterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        encodedImage = getIntent().getStringExtra("PHOTO");
+        Bitmap selectedImage = BitmapFactory.decodeByteArray(
+                getIntent().getByteArrayExtra("PHOTO"), 0, getIntent().getByteArrayExtra("PHOTO").length);
+
+        String encodedImage = encodeImage(selectedImage);
         volleyPost volley = new volleyPost();
 
         Button cirkelButton = (Button) findViewById(R.id.Cirkels);
@@ -35,6 +42,14 @@ public class filterActivity extends AppCompatActivity {
                 volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/driehoek");
             }
         });
+    }
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        return encImage;
     }
 
 }

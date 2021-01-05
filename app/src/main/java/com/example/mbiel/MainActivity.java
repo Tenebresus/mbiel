@@ -3,9 +3,11 @@ package com.example.mbiel;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,7 +16,9 @@ import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,35 +72,34 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
 
-            imageUri = data.getData();
+            final Uri imageUri = data.getData();
+            InputStream imageStream = null;
             try {
-                Bitmap photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                String encodedImage = encodeImage(photo);
-
-                Intent intent = new Intent(getBaseContext(), filterActivity.class);
-                intent.putExtra("PHOTO", encodedImage);
-                startActivity(intent);
-            } catch (IOException e) {
+                imageStream = getContentResolver().openInputStream(imageUri);
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+            Intent intent = new Intent(this, filterActivity.class);
+
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, bs);
+            intent.putExtra("PHOTO", bs.toByteArray());
+
+            startActivity(intent);
         }
         if (requestCode == TAKE_PICTURE && resultCode == RESULT_OK) {
 
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            String encodedImage = encodeImage(photo);
 
-            Intent intent = new Intent(getBaseContext(), filterActivity.class);
-            intent.putExtra("PHOTO", encodedImage);
+            Intent intent = new Intent(this, filterActivity.class);
+
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, bs);
+            intent.putExtra("PHOTO", bs.toByteArray());
+
             startActivity(intent);
         }
-    }
-
-    private String encodeImage(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
-
-        return encImage;
     }
 }
