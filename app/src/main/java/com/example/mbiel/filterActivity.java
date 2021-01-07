@@ -47,7 +47,7 @@ public class filterActivity extends AppCompatActivity {
         mirrorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/mirror");
+                volley.volleyPostRequest(encodedImage, "http://192.168.178.230:5000/mirror");
             }
         });
     }
