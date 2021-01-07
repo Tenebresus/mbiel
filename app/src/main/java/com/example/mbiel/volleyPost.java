@@ -1,6 +1,10 @@
 package com.example.mbiel;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,6 +15,8 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 
 public class volleyPost extends MainActivity {
     public void volleyPostRequest(String dat, String url){
@@ -28,7 +34,24 @@ public class volleyPost extends MainActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println(response);
+                byte[] decodedString = new byte[0];
+                try {
+                    String resp = response.getString("data");
+                    decodedString = Base64.decode(resp, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString,
+                            0,decodedString.length);
+
+                    Intent intent = new Intent(MainActivity.getAppContext(), resultActivity.class);
+
+                    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                    decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, bs);
+                    intent.putExtra("PHOTO", bs.toByteArray());
+
+                    startActivity(intent);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

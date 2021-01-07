@@ -42,6 +42,14 @@ public class filterActivity extends AppCompatActivity {
                 volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/driehoek");
             }
         });
+
+        Button mirrorButton = (Button) findViewById(R.id.spiegelen);
+        mirrorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/mirror");
+            }
+        });
     }
     private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
