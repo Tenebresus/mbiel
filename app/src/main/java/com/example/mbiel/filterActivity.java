@@ -50,6 +50,14 @@ public class filterActivity extends AppCompatActivity {
                 volley.volleyPostRequest(encodedImage, "http://192.168.178.230:5000/mirror");
             }
         });
+
+        Button zwartWitButton = (Button) findViewById(R.id.zwartwit);
+        zwartWitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                volley.volleyPostRequest(encodedImage, "http://192.168.178.230:5000/zwart_wit");
+            }
+        });
     }
     private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
