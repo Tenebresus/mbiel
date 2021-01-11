@@ -58,6 +58,14 @@ public class filterActivity extends AppCompatActivity {
                 volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/zwart_wit");
             }
         });
+
+        Button binaryButton = (Button) findViewById(R.id.binary);
+        binaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                volley.volleyPostRequest(encodedImage, "http://86.83.86.194:5000/binary");
+            }
+        });
     }
     private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
