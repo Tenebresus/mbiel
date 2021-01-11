@@ -23,7 +23,6 @@ import java.io.InputStream;
 public class MainActivity extends AppCompatActivity {
 
     private static Context context;
-    ImageView imageView;
     Uri imageUri;
     private static final int PICK_IMAGE = 100;
     private static final int TAKE_PICTURE = 1;
@@ -33,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainActivity.context = getApplicationContext();
-
-        imageView = (ImageView) findViewById(R.id.imageView);
 
         // Als je op de button klikt opent hij de camera
         final Button takePictureButton = findViewById(R.id.takePictureButton);
