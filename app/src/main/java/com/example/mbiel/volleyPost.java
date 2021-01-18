@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -48,10 +49,9 @@ public class volleyPost extends MainActivity {
                     Intent intent = new Intent(ct, resultActivity.class);
 
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                    decodedByte.compress(Bitmap.CompressFormat.JPEG, 50, bs);
+                    decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, bs);
                     intent.putExtra("PHOTO", bs.toByteArray());
 
-                    //https://stackoverflow.com/questions/3918517/calling-startactivity-from-outside-of-an-activity-context
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     ct.startActivity(intent);
@@ -66,6 +66,11 @@ public class volleyPost extends MainActivity {
                 Log.i("ERROR", error.toString());
             }
         });
+
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonObjectRequest);
 
