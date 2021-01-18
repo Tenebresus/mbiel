@@ -21,7 +21,6 @@ public class resultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-        Log.i("TEst", "OUTPUT");
 
         Bitmap decodedByte = BitmapFactory.decodeByteArray(
                 getIntent().getByteArrayExtra("PHOTO"), 0, getIntent().getByteArrayExtra("PHOTO").length);
