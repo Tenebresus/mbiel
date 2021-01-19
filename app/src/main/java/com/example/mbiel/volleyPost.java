@@ -69,7 +69,7 @@ public class volleyPost extends MainActivity {
 
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                 10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonObjectRequest);
